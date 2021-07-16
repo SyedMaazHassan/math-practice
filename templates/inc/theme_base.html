@@ -1,0 +1,34 @@
+{% load static %}
+  {% include 'inc/theme-head.html' %}
+  <title>{% block pagetitle %}{% endblock pagetitle %}</title>
+</head>
+
+
+<body>
+
+    {% block popups %}
+
+    {% endblock popups %}
+ 
+
+  <!-- PAGE LOADER -->
+  {% include 'inc/page-loader.html' %}
+  <!-- /PAGE LOADER -->
+
+  <!-- NAVIGATION WIDGET -->
+  {% include 'inc/theme-navbar.html' %}
+  <!-- /NAVIGATION WIDGET -->
+
+  <!-- HEADER -->
+  {% include 'inc/header-navbar.html' %}
+  <!-- /HEADER -->
+
+  {% block content %}
+
+  {% endblock content %}
+
+
+  {% include 'inc/bottom-links.html' %}
+
+</body>
+</html>

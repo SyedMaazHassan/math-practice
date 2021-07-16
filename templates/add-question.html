@@ -1,0 +1,1096 @@
+
+{% extends 'inc/theme_base.html' %}
+{% load static %}
+
+{% block pagetitle %} 
+    Add new question
+{% endblock pagetitle %}
+
+
+
+{% block popups %} 
+
+    <!-- POPUP BOX -->
+    <div class="popup-box mid popup-manage-group">
+      <!-- POPUP CLOSE BUTTON -->
+      <div class="popup-close-button popup-manage-group-trigger">
+        <!-- POPUP CLOSE BUTTON ICON -->
+        <svg class="popup-close-button-icon icon-cross">
+          <use xlink:href="#svg-cross"></use>
+        </svg>
+        <!-- /POPUP CLOSE BUTTON ICON -->
+      </div>
+      <!-- /POPUP CLOSE BUTTON -->
+  
+      <!-- POPUP BOX BODY -->
+      <div class="popup-box-body">
+        
+    
+        <!-- POPUP BOX CONTENT -->
+        <div class="popup-box-content small">
+          <!-- WIDGET BOX -->
+          <div class="widget-box">
+            <!-- WIDGET BOX TITLE -->
+            <p class="widget-box-title">Group Info</p>
+            <!-- /WIDGET BOX TITLE -->
+        
+            <!-- WIDGET BOX CONTENT -->
+            <div class="widget-box-content">
+              <!-- FORM -->
+              <form class="form">
+                <!-- FORM ROW -->
+                <div class="form-row">
+                  <!-- FORM ITEM -->
+                  <div class="form-item">
+                    <!-- FORM INPUT -->
+                    <div class="form-input small active">
+                      <label for="group-name">Group Name</label>
+                      <input type="text" id="group-name" name="group_name" value="Cosplayers of the World">
+                    </div>
+                    <!-- /FORM INPUT -->
+                  </div>
+                  <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+  
+                <!-- FORM ROW -->
+                <div class="form-row">
+                  <!-- FORM ITEM -->
+                  <div class="form-item">
+                    <!-- FORM INPUT -->
+                    <div class="form-input small active">
+                      <label for="group-tagline">Tagline</label>
+                      <input type="text" id="group-tagline" name="group_tagline" value="All Cosplayers Welcome!">
+                    </div>
+                    <!-- /FORM INPUT -->
+                  </div>
+                  <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+  
+                <!-- FORM ROW -->
+                <div class="form-row">
+                  <!-- FORM ITEM -->
+                  <div class="form-item">
+                    <!-- FORM INPUT -->
+                    <div class="form-input small mid-textarea">
+                      <textarea id="group-description" name="group_description" placeholder="Write a little description about the group..."></textarea>
+                    </div>
+                    <!-- /FORM INPUT -->
+                  </div>
+                  <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+  
+                <!-- FORM ROW -->
+                <div class="form-row">
+                  <!-- FORM ITEM -->
+                  <div class="form-item">
+                    <!-- FORM INPUT -->
+                    <div class="form-input small active">
+                      <label for="group-public-email">Public Email</label>
+                      <input type="text" id="group-public-email" name="group_public_email" value="info@cosworld.com">
+                    </div>
+                    <!-- /FORM INPUT -->
+                  </div>
+                  <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+  
+                <!-- FORM ROW -->
+                <div class="form-row">
+                  <!-- FORM ITEM -->
+                  <div class="form-item">
+                    <!-- FORM INPUT -->
+                    <div class="form-input small">
+                      <label for="group-public-website">Public Website</label>
+                      <input type="text" id="group-public-website" name="group_public_website">
+                    </div>
+                    <!-- /FORM INPUT -->
+                  </div>
+                  <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+              </form>
+              <!-- /FORM -->
+            </div>
+            <!-- WIDGET BOX CONTENT -->
+          </div>
+          <!-- /WIDGET BOX -->
+        </div>
+        <!-- /POPUP BOX CONTENT -->
+      </div>
+      <!-- /POPUP BOX BODY -->
+    </div>
+    <!-- /POPUP BOX -->
+
+{% endblock popups %}
+
+
+{% block content %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/latest.js?config=AM_CHTML"></script>
+
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+  <div class="row mb-4">
+
+    <div class="col-sm-12 my-2">
+      <div class="widget-box">
+        <h3>Add new question</h3>
+
+        <div class="row" id="main-app">
+            <div :class="[ (is_question_details_saved() && !(is_element_completed()) ? 'col-sm-8' : 'col-sm-12') ]">
+                
+                <div class="widget-box mt-4 p-3">
+                  <div class="row mt-1">
+                    <div class="col-sm-6 d-flex align-items-center">
+                      <span class="material-icons mr-1" :class="[( is_question_details_saved() ? 'text-success' : 'text-secondary' )]">check_circle</span>
+                      <h4 class="mx-2 my-0"> 
+                        Question details
+                      </h4>
+                    </div>
+
+                    <div class="col-sm-6 text-right">
+        
+
+                      <button 
+                          v-if="is_question_details_saved()"
+                          class="px-3 py-0 button secondary full"
+                          @click="start_editing_question_details()"
+                          style="width: fit-content; height:fit-content; outline:none">
+                          EDIT
+                      </button>
+
+                      <button 
+                          v-else
+                          class="px-3 py-0 button secondary full"
+                          @click="save_question_details()"
+                          style="width: fit-content; height:fit-content; outline:none">
+                          SAVE
+                      </button>
+
+                    </div>
+                  </div>
+               
+
+                  <div class="row mt-1">
+                    <div class="col-sm-4 mt-3 d-flex align-items-center">
+                       <!-- FORM ROW -->
+                        <div class="form-row">
+                          <!-- FORM ITEM -->
+                          <div class="form-item">
+                            <!-- FORM INPUT -->
+                            <div class="form-input">
+                              <label for="title">Title</label>
+                              <input :disabled="is_question_details_saved()" type="text" id="title" name="title" v-model="questions_details.title" value="">
+                            </div>
+                            <!-- /FORM INPUT -->
+                          </div>
+                          <!-- /FORM ITEM -->
+                        </div>
+                        <!-- /FORM ROW -->
+                    </div>
+
+                    <div class="col-sm-4 mt-3  d-flex align-items-center">
+
+                      <div class="form-select">
+                        <label for="quest-filter-order">Topic</label>
+                        <select id="quest-filter-order" 
+                          :disabled="is_question_details_saved()"
+                          v-model="questions_details.topic">
+                          {% for topic in topic_list %}
+                            <option value="{{ topic.id }}">{{ topic.topic_name }}</option>
+                          {% endfor %}
+                        </select>
+                        <!-- FORM SELECT ICON -->
+                        <svg class="form-select-icon icon-small-arrow">
+                          <use xlink:href="#svg-small-arrow"></use>
+                        </svg>
+                        <!-- /FORM SELECT ICON -->
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4 mt-3  d-flex align-items-center">
+                      <div class="form-select form-row">
+                        <label for="quest-filter-order">Exercise</label>
+                        <select id="quest-filter-order" 
+                          :disabled="is_question_details_saved()"
+                          v-model="questions_details.exercise" name="quest_filter_order">
+                          
+                          {% for exercise in exercise_list %}
+                            <option value="{{ exercise.id }}">{{ exercise.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <!-- FORM SELECT ICON -->
+                        <svg class="form-select-icon icon-small-arrow">
+                          <use xlink:href="#svg-small-arrow"></use>
+                        </svg>
+                        <!-- /FORM SELECT ICON -->
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 pt-3">
+                      <!-- FORM ROW -->
+                      <div class="form-row">
+                        <!-- FORM ITEM -->
+                        <div class="form-item">
+                          <!-- FORM INPUT -->
+                          <div class="form-input">
+                            <label for="description">Description</label>
+                            <textarea name="description" :disabled="is_question_details_saved()" id="description" cols="30" rows="2"  v-model="questions_details.description" ></textarea>
+                          </div>
+                          <!-- /FORM INPUT -->
+                        </div>
+                        <!-- /FORM ITEM -->
+                      </div>
+                      <!-- /FORM ROW -->
+                    </div>
+                 
+                  </div>
+
+                  <p class="text-danger my-0 mt-2" v-if="questions_details.error">${ questions_details.error }</p>
+
+
+                </div>
+
+
+                <div v-if="is_question_details_saved()" class="widget-box mt-4 p-3">
+                  <div class="row mt-1">
+                    <div class="col-sm-6 d-flex align-items-center">
+                      <span class="material-icons mr-1" :class="[( is_element_completed() ? 'text-success' : 'text-secondary' )]">check_circle</span>
+                      <h4 class="mx-2 my-0"> 
+                        Question elements
+                      </h4>
+                    </div>
+
+                    <div class="col-sm-6 text-right">
+
+                    
+                      <button 
+                          v-if="to_show_condition_toggle()"
+                          class="px-3 py-0 button secondary full"
+                          v-on:click="toggle_show_hide_conditions()"
+                          style="width: fit-content; height:fit-content; outline:none">
+                          <span v-if="elements.show_conditions">Hide conditions</span>
+                          <span v-else>Show conditions</span>
+                      </button>
+        
+                      <button 
+                          v-if="is_element_completed()"
+                          class="px-3 py-0 button secondary full"
+                          v-on:click="start_editing_element()"
+                          style="width: fit-content; height:fit-content; outline:none">
+                          EDIT
+                      </button>
+
+                      <button 
+                          v-else
+                          class="px-3 py-0 button secondary full"
+                          v-on:click="save_question_elements()"
+                          style="width: fit-content; height:fit-content; outline:none">
+                          SAVE
+                      </button>
+
+                    </div>
+                  </div>
+               
+
+                  <div class="row mt-2">
+
+                    <div v-for="(element, element_index) in list_of_elements" class="col-sm-12">
+                        <div class="widget-box border  p-3 my-2">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <p class="mb-3 text-primary">
+                                  <b>${ element.key } <i>(${ element.expression_symbol }) </i></b>
+                                </p>
+                              </div>
+
+                              <div class="col-sm-6 text-right">
+                                
+                                <span v-if="!(elements.is_completed)">
+                                  <p v-if="element.example_value">
+                                    example value: &nbsp; <b>${ element.example_value }</b>
+                                  </p>
+  
+                                  <p v-else>
+                                      example value: &nbsp; <b>${ element.value }</b>
+                                  </p>
+                                </span>
+                                
+                              </div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-sm-2">
+                                <!-- FORM ROW -->
+                                <div class="form-row">
+                                  <!-- FORM ITEM -->
+                                  <div class="form-item">
+                                    <!-- FORM INPUT -->
+                                    <div class="form-input">
+                                      <!-- <label for="title">${ element.label }</label> -->
+                                      <input type="text" :id="element_index" v-on:click="focus(element_index)"   :value="element.value" disabled>
+                                    </div>
+                                    <!-- /FORM INPUT -->
+                                  </div>
+                                  <!-- /FORM ITEM -->
+                                </div>
+                                <!-- /FORM ROW -->
+                              </div>
+
+                              <div class="col-sm-3 d-flex align-items-center">
+                                <div>
+                                  <h5><b>${ element.label }</b></h5>
+                                  <h6 class="mt-2 text-muted">input: &nbsp;&nbsp;<u>${ element.type }</u></h6> 
+                                </div>
+                              </div>
+
+                              <div class="col-sm-3 d-flex align-items-center">
+                                <div>
+                                  <span :class="element.nature + '-label'">
+                                    <b>Nature:</b> ${ element.nature }
+                                  </span>
+                                </div>
+                              </div>
+
+
+                              <div class="col-sm-2 d-flex align-items-center justify-content-center">
+                               
+                            
+                                <div v-if="element.is_random" class="d-flex align-items-center">
+                                  
+                                  <span class="material-icons mr-2" :class="'text-success'" style="font-size: 20px;">check_circle</span>
+                                  Random
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 d-flex align-items-center  justify-content-end">
+                                <span
+                                  v-if="!(elements.is_completed)"
+                                  v-on:click="delete_element(element_index)" 
+                                  class="material-icons delete-icon p-1 mk-pointer radius-100 alert-danger">delete</span>
+
+                                <span v-else>
+                                  <p v-if="element.example_value">
+                                    example value: &nbsp; <b>${ element.example_value }</b>
+                                  </p>
+  
+                                  <p v-else>
+                                      example value: &nbsp; <b>${ element.value }</b>
+                                  </p>
+                                </span>
+  
+                              </div>
+                              
+                              <div class="col-sm-12" v-if="element.condition_list.length > 0 && elements.show_conditions">
+                                
+                                <h5 class="mt-4 text-secondary">Value conditions</h5>
+                                <div class="row px-2">
+                                    <div v-for="single_condition in element.condition_list" 
+                                      class="col-sm-6 mt-1 px-2">
+                                      <div class="d-flex align-items-center border px-3 py-2 mt-2"  style="border-left: solid 3px #615dfa !important;">
+
+                                        <div style="width: 100%;">
+                                          value should be ${ single_condition.value } ${ single_condition.limit }
+                                        </div>
+                                          
+          
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+
+                            </div>
+
+                     
+                          
+                          
+                        </div>  
+
+                    </div>
+                    
+                 
+                  </div>
+
+                  <div v-if="list_of_elements.length == 0" class="alert alert-danger text-center radius-10 mt-3" role="alert">
+                      No form elements added yet!
+                  </div>
+
+                  <p class="text-danger my-0 mt-2" v-if="elements.whole_error">${ elements.whole_error }</p>
+
+
+                </div>
+
+                
+            </div>
+
+            <div v-if="is_question_details_saved() && !(is_element_completed())" class="col-sm-4">
+              <div class="widget-box mt-4 p-3 border">
+                <h4 class="mx-2 my-3"> 
+                  Add questions element
+                </h4>
+
+                <div class="mt-4">
+                  <!-- FORM ROW -->
+                  <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                      <!-- FORM INPUT -->
+                      <div class="form-input">
+                        <label for="title">Label</label>
+                        <input type="text" v-on:click="focus('label')" id="label" v-model="elements.new_element.label" value="">
+                      </div>
+                      <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                  </div>
+                  <!-- /FORM ROW -->
+
+                  <div class="form-select form-row">
+                    <label for="quest-filter-order">Type</label>
+                    <select id="quest-filter-order" 
+                      v-model="elements.new_element.type" name="quest_filter_order">
+                      <option v-for="type in elements.types" :value="type.key">${ type.value }</option>
+                    </select>
+                    <!-- FORM SELECT ICON -->
+                    <svg class="form-select-icon icon-small-arrow">
+                      <use xlink:href="#svg-small-arrow"></use>
+                    </svg>
+                    <!-- /FORM SELECT ICON -->
+                  </div>
+
+                  <div class="form-select form-row">
+                    <label for="quest-filter-order">Nature</label>
+                    <select id="quest-filter-order" 
+                      v-model="elements.new_element.nature" name="quest_filter_order">
+                      <option v-for="nature in elements.natures" :value="nature.key">${ nature.value }</option>
+                    </select>
+                    <!-- FORM SELECT ICON -->
+                    <svg class="form-select-icon icon-small-arrow">
+                      <use xlink:href="#svg-small-arrow"></use>
+                    </svg>
+                    <!-- /FORM SELECT ICON -->
+                  </div>
+
+                  <!-- FORM ROW -->
+                  <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                      <!-- FORM INPUT -->
+                      <div class="form-input">
+                        <label for="title">Expression symbol (unique)</label>
+                        <input 
+                          type="text" v-on:click="focus('ex_symbol')" 
+                          id="ex_symbol" 
+                          v-model="elements.new_element.expression_symbol" value="">
+                      </div>
+                      <p class="mt-2"><b>V</b> for Velocity, <b>F</b> for Force.</p>
+                      <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                  </div>
+                  <!-- /FORM ROW -->
+
+
+                  <!-- FORM ROW -->
+                  <div class="form-row" v-if="is_example_value_required()">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                      <!-- FORM INPUT -->
+                      <div class="form-input">
+                        <label for="title">Example value</label>
+                        <input 
+                          type="text" v-on:click="focus('example_value')" 
+                          id="example_value" 
+                          v-model="elements.new_element.example_value" value="">
+                      </div>
+                      <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                  </div>
+                  <!-- /FORM ROW -->
+
+
+            
+
+                  
+
+
+                  <div v-if="is_question()" class="mt-4">
+
+                    <!-- FORM SWITCH -->
+                    <div class="form-row mt-3" v-on:click="toggle_random_value_for_element()">
+                      <div 
+                          class="form-switch" 
+                          :class="[(is_random_allow() ? 'active': '')]">
+                        <!-- FORM SWITCH BUTTON -->
+                        <div 
+                          class="form-switch-button" ></div>
+                        <!-- /FORM SWITCH BUTTON -->
+                      </div>
+
+                      <h5 class="mt-1 mx-3 text-secondary">Allow random value</h5>
+
+                      <!-- /FORM SWITCH -->
+                    </div>
+
+                    <div v-if="is_random_allow()">
+
+                        <!-- FORM ROW -->
+                      <div class="row">
+                        <div class="col-sm-4 pr-0">
+                          <div class="form-select form-row mt-4">
+                            <label for="quest-filter-order">Condition</label>
+                            <select v-model="elements.new_condition.condition" 
+                              name="quest_filter_order">
+                              <option v-for="(condition, index) in elements.condition_compares" :value="index">Value ${ condition.key }</option>
+                            </select>
+                            <!-- FORM SELECT ICON -->
+                            <svg class="form-select-icon icon-small-arrow">
+                              <use xlink:href="#svg-small-arrow"></use>
+                            </svg>
+                            <!-- /FORM SELECT ICON -->
+                          </div>
+                        </div>
+
+                        <div class="col-sm-4 pr-0">
+                          <div class="form-row mt-4">
+                            <!-- FORM ITEM -->
+                            <div class="form-item">
+                              <!-- FORM INPUT -->
+                              <div class="form-input">
+                                <label>limit</label>
+                                <input type="text" v-on:click="focus('limit')" id="limit" v-model="elements.new_condition.limit" value="">
+                              </div>
+                              <!-- /FORM INPUT -->
+                            </div>
+                            <!-- /FORM ITEM -->
+                          </div>
+                        </div>
+
+                        <div class="col-sm-4 d-flex align-items-center">
+                          <button class="button secondary mt-4" v-on:click="add_element_condition()">
+                        <!-- ICON PLUS -->
+                        <svg class="icon-plus">
+                          <use xlink:href="#svg-plus"></use>
+                        </svg>
+                        <!-- /ICON PLUS -->
+                      </button>
+                        </div>
+                      </div>
+
+                      <p class="text-danger my-3">${ elements.new_condition.error }</p>
+
+
+                      <div class="mt-4">
+                        <h6>All conditions</h6>
+
+                        <div v-if="elements.new_element.condition_list.length == 0" class="border px-3 py-2 mt-2 text-danger" style="border-left: solid 3px #fa5d5d !important;">
+                          No condition added
+                        </div>
+                      
+                        <div 
+                            v-else 
+                            v-for="(show_condition, show_condition_index) in elements.new_element.condition_list" class="border px-3 py-2 mt-2" style="border-left: solid 3px #615dfa !important;">
+
+                            <div v-if="show_condition" class="d-flex align-items-center">
+
+                              <div style="width: 90%;">
+                                value ${ show_condition.value } ${ show_condition.limit }
+                              </div>
+                                
+                              <div style="width: 10%;" class="text-right">
+                                <span
+                                  v-on:click="delete_condition(show_condition_index)" 
+                                  class="material-icons my-0" 
+                                  style="color: #8d8d8d; cursor: pointer;">cancel</span>
+                              </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                      </div>
+
+                    </div>  
+
+                    <!-- FORM ROW -->
+                    <div v-else class="form-row mt-4" >
+                      <!-- FORM ITEM -->
+                      <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                          <label for="title">Value</label>
+                          <input type="text" id="value" v-on:click="focus('value')" v-model="elements.new_element.value" value="">
+                        </div>
+                        <!-- /FORM INPUT -->
+                      </div>
+                      <!-- /FORM ITEM -->
+                    </div>
+                    <!-- /FORM ROW -->
+
+                  </div>
+
+                  <p v-if="elements.error" class="text-danger mt-3">${ elements.error }</p>
+
+                 
+                  <!-- /FORM ROW -->
+                  <button
+                    v-on:click="add_element()" 
+                    class="button btn-secondary full mt-4 mb-2 bg-secondary" 
+                    style="outline: none;">Add element</button>
+
+
+              </div>
+
+
+              </div>
+            </div>
+
+        </div>
+
+        <div id="rule-section" style="display: none;" class="row">
+          <div class="col-sm-12">
+
+            <div class="widget-box mt-4 p-3">
+              <div class="row mt-1">
+                <div class="col-sm-6 d-flex align-items-center">
+                  <span class="material-icons mr-1" class="text-secondary" id="done_rule_symbol" style="color: #8d8d8d;">check_circle</span>
+                  <h4 class="mx-2 my-0"> 
+                    Success criteria
+                  </h4>
+                </div>
+
+                <div class="col-sm-6 text-right">
+    
+
+                  <button 
+                      id="edit_rule"
+                      class="px-3 py-0 button secondary full"
+                      style="display: none; width: fit-content; height:fit-content; outline:none">
+                      EDIT
+                  </button>
+
+                  <button 
+                      id="save_rule"
+                      class="px-3 py-0 button secondary full"
+                      style="width: fit-content; height:fit-content; outline:none">
+                      SAVE
+                  </button>
+
+                </div>
+              </div>
+
+              <div class="widget-box p-3 mt-4 border">
+                <div class="mb-3" id="container_of_primary_label">
+                  
+                  
+                </div>
+                
+
+                <!-- FORM ROW -->
+                <div class="form-row">
+                  <!-- FORM ITEM -->
+                  <div class="form-item">
+                    <!-- FORM INPUT -->
+                    <div class="form-input">
+                      <label for="description">Rule</label>
+                      <textarea 
+                        name="description" 
+                        class="ioArea" 
+                        id="demoSource" rows="2" ></textarea>
+                    </div>
+                    <!-- /FORM INPUT -->
+                  </div>
+                  <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+                <div class="ioArea text-center mt-4" id="demoRendering" style="font-size: 30px;">
+                    <span class="MathJax_Preview" style="display: none;"></span><span id="MathJax-Element-1-Frame" class="mjx-chtml MathJax_CHTML" tabindex="0" data-mathml="<math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;><mstyle displaystyle=&quot;true&quot;><mrow><munderover><mo>&amp;#x2211;</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mrow><msup><mi>i</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>n</mi><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow><mn>2</mn></mfrac><mo>)</mo></mrow><mn>263</mn></msup></mstyle></math>" role="presentation" style="font-size: 117%; position: relative;"><span id="MJXc-Node-1603" class="mjx-math" aria-hidden="true"><span id="MJXc-Node-1604" class="mjx-mrow"><span id="MJXc-Node-1605" class="mjx-mstyle"><span id="MJXc-Node-1606" class="mjx-mrow"><span id="MJXc-Node-1607" class="mjx-mrow" style="padding-left: 0.111em; padding-right: 0.167em;"><span id="MJXc-Node-1608" class="mjx-munderover"><span class="mjx-itable"><span class="mjx-row"><span class="mjx-cell"><span class="mjx-stack"><span class="mjx-over" style="font-size: 70.7%; padding-bottom: 0.247em; padding-top: 0.141em; padding-left: 0.917em;"><span id="MJXc-Node-1614" class="mjx-mi" style=""><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.24em; padding-bottom: 0.3em;">n</span></span></span><span class="mjx-op"><span id="MJXc-Node-1609" class="mjx-mo"><span class="mjx-char MJXc-TeX-size2-R" style="padding-top: 0.715em; padding-bottom: 0.715em;">∑</span></span></span></span></span></span><span class="mjx-row"><span class="mjx-under" style="font-size: 70.7%; padding-top: 0.236em; padding-bottom: 0.141em; padding-left: 0.256em;"><span id="MJXc-Node-1610" class="mjx-mrow" style=""><span id="MJXc-Node-1611" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.418em; padding-bottom: 0.3em;">i</span></span><span id="MJXc-Node-1612" class="mjx-mo" style="padding-left: 0.15em; padding-right: 0.15em;"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.062em; padding-bottom: 0.3em;">=</span></span><span id="MJXc-Node-1613" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.359em; padding-bottom: 0.359em;">1</span></span></span></span></span></span></span></span><span id="MJXc-Node-1615" class="mjx-msup"><span class="mjx-base"><span id="MJXc-Node-1616" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.418em; padding-bottom: 0.3em;">i</span></span></span><span class="mjx-sup" style="font-size: 70.7%; vertical-align: 0.584em; padding-left: 0px; padding-right: 0.071em;"><span id="MJXc-Node-1617" class="mjx-mn" style=""><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.359em; padding-bottom: 0.359em;">3</span></span></span></span><span id="MJXc-Node-1618" class="mjx-mo" style="padding-left: 0.333em; padding-right: 0.333em;"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.062em; padding-bottom: 0.3em;">=</span></span><span id="MJXc-Node-1619" class="mjx-msup"><span class="mjx-base"><span id="MJXc-Node-1620" class="mjx-mrow"><span id="MJXc-Node-1621" class="mjx-mo"><span class="mjx-char MJXc-TeX-size3-R" style="padding-top: 1.249em; padding-bottom: 1.249em;">(</span></span><span id="MJXc-Node-1622" class="mjx-mfrac"><span class="mjx-box MJXc-stacked" style="width: 3.989em; padding: 0px 0.12em;"><span class="mjx-numerator" style="width: 3.989em; top: -1.545em;"><span id="MJXc-Node-1623" class="mjx-mrow"><span id="MJXc-Node-1624" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.24em; padding-bottom: 0.3em;">n</span></span><span id="MJXc-Node-1625" class="mjx-mrow"><span id="MJXc-Node-1626" class="mjx-mo"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.478em; padding-bottom: 0.597em;">(</span></span><span id="MJXc-Node-1627" class="mjx-mi"><span class="mjx-char MJXc-TeX-math-I" style="padding-top: 0.24em; padding-bottom: 0.3em;">n</span></span><span id="MJXc-Node-1628" class="mjx-mo" style="padding-left: 0.267em; padding-right: 0.267em;"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.3em; padding-bottom: 0.418em;">+</span></span><span id="MJXc-Node-1629" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.359em; padding-bottom: 0.359em;">1</span></span><span id="MJXc-Node-1630" class="mjx-mo"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.478em; padding-bottom: 0.597em;">)</span></span></span></span></span><span class="mjx-denominator" style="width: 3.989em; bottom: -0.711em;"><span id="MJXc-Node-1631" class="mjx-mn"><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.359em; padding-bottom: 0.359em;">2</span></span></span><span class="mjx-line" style="border-bottom: 1.3px solid; top: -0.287em; width: 3.989em;"></span></span><span class="mjx-vsize" style="height: 2.257em; vertical-align: -0.711em;"></span></span><span id="MJXc-Node-1632" class="mjx-mo"><span class="mjx-char MJXc-TeX-size3-R" style="padding-top: 1.249em; padding-bottom: 1.249em;">)</span></span></span></span><span class="mjx-sup" style="font-size: 70.7%; vertical-align: 1.8em; padding-left: 0px; padding-right: 0.071em;"><span id="MJXc-Node-1633" class="mjx-mn" style=""><span class="mjx-char MJXc-TeX-main-R" style="padding-top: 0.359em; padding-bottom: 0.359em;">263</span></span></span></span></span></span></span></span><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle displaystyle="true"><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover></mrow><msup><mi>i</mi><mn>3</mn></msup><mo>=</mo><msup><mrow><mo>(</mo><mfrac><mrow><mi>n</mi><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow></mrow><mn>2</mn></mfrac><mo>)</mo></mrow><mn>263</mn></msup></mstyle></math></span></span><script type="math/asciimath" id="MathJax-Element-1"></script>
+                </div>
+              </div>
+
+              <p class="text-danger my-0 mt-3" id="rule_error"></p>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div id="loop-section" style="display: none;" class="row">
+          <div class="col-sm-12">
+
+            <div class="widget-box mt-4 p-3">
+              <div class="row mt-1">
+                <div class="col-sm-6 d-flex align-items-center">
+                  <span class="material-icons mr-1" class="text-secondary" id="done_finalizing_symbol" style="color: #8d8d8d;">check_circle</span>
+                  <h4 class="mx-2 my-0"> 
+                    Finalizing...
+                  </h4>
+                </div>
+
+                <div class="col-sm-6 text-right">
+    
+
+                  <button 
+                      id="edit_finalizing"
+                      class="px-3 py-0 button secondary full"
+                      style="display: none; width: fit-content; height:fit-content; outline:none">
+                      EDIT
+                  </button>
+
+                  <button 
+                      id="save_finalizing"
+                      class="px-3 py-0 button secondary full"
+                      style="width: fit-content; height:fit-content; outline:none">
+                      SAVE
+                  </button>
+
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-sm-4">
+                   
+                  <!-- FORM ROW -->
+                  <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                      <!-- FORM INPUT -->
+                      <div class="form-input">
+                        <label for="title">Loop</label>
+                        <input type="text" id="loop_number">
+                      </div>
+                      <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                  </div>
+                  <!-- /FORM ROW -->
+
+                </div>
+
+                <div class="col-sm-4">
+                    <!-- FORM ROW -->
+                    <div class="form-row">
+                      <!-- FORM ITEM -->
+                      <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                          <label for="title">Success message</label>
+                          <input type="text" id="success_msg">
+                        </div>
+                        <!-- /FORM INPUT -->
+                      </div>
+                      <!-- /FORM ITEM -->
+                    </div>
+                    <!-- /FORM ROW -->
+
+               </div>
+
+
+               <div class="col-sm-4">
+                <!-- FORM ROW -->
+                <div class="form-row">
+                  <!-- FORM ITEM -->
+                  <div class="form-item">
+                    <!-- FORM INPUT -->
+                    <div class="form-input">
+                      <label for="title">Failed message</label>
+                      <input type="text" id="fail_msg">
+                    </div>
+                    <!-- /FORM INPUT -->
+                  </div>
+                  <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+              </div>
+
+
+
+              </div>
+    
+
+              <p class="text-danger my-0 mt-3" id="loop_error"></p>
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div id="success-section" style="display: none;" class="row">
+          <div class="col-sm-12">
+
+            <div class="widget-box mt-4 p-3">
+              <div class="row mt-1">
+                <div class="col-sm-6 d-flex align-items-center">
+                  <span class="material-icons mr-1" class="text-success" style="color: #28a745;">check_circle</span>
+                  <h4 class="mx-2 my-0"> 
+                    process has been completed! 
+                  </h4>
+                </div>
+
+                <div class="col-sm-6 text-right">
+
+                  <button 
+                      id="preview"
+                      class="px-3 py-0 button  secondary full"
+                      style="width: fit-content; height:fit-content; outline:none">
+                      SAVE QUESTION & PREVIEW
+                  </button>
+
+                </div>
+              </div>
+
+    
+            </div>
+
+          </div>
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+  
+
+
+
+
+</div>
+<!-- /CONTENT GRID -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="{% static 'js/add-question.js' %}"></script>
+<script>
+    var is_edit_rule = false;
+    var is_rule_completed = false;
+    var is_loop_completed = false;
+    var id = null;
+
+    $("input, textarea").each(function () {
+        if ($(this).val()) {
+            $(this).parent().addClass("active");
+        }
+    });
+
+    window.MathJax = {
+				"fast-preview": {
+       					disabled: true
+				},
+				AuthorInit: function() {
+					MathJax.Hub.Register.StartupHook('End', function() {
+						MathJax.Hub.processSectionDelay = 0
+						var demoSource = document.getElementById('demoSource')
+            console.log(demoSource);
+            var demoRendering = document.getElementById('demoRendering')
+						var math = MathJax.Hub.getAllJax('demoRendering')[0]
+						demoSource.addEventListener('input', function() {
+							MathJax.Hub.Queue(['Text', math, demoSource.value])
+						})
+					})
+				}
+			}
+
+    function set_input_key(index, key){
+        let new_string = $("#demoSource").val() + key;
+        $("#demoSource").val( new_string );
+        $("#demoSource").focus();
+    }
+
+    function get_request(my_url, my_data) {
+        let result;
+        $.ajax({
+            url: my_url,
+            type: "GET",
+            data: my_data,
+            async: false,
+            success: function (response) {
+                result = response
+            }
+        });
+        return result;
+    }
+
+    function render_new_elements(){
+      if (is_rule_completed) {
+        $("#loop-section").show();
+      }
+
+      if (is_loop_completed) {
+        $("#success-section").show();
+      }
+
+
+
+      let elements = JSON.parse(localStorage.getItem("elements"));
+      id = JSON.parse(localStorage.getItem("id"));
+
+      $("#container_of_primary_label").children().remove();
+      
+      for (let i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        $("#container_of_primary_label").append(`
+
+          <div class="mb-3 float-left">
+            <span 
+                class="primary-label"
+                onclick="set_input_key('${i}', '${element.expression_symbol}')"
+                >
+               <b>${element.expression_symbol}:</b> ${ element.key }
+            </span>
+          </div>
+
+        `)
+      }
+      console.log(elements);
+    }
+
+    $("#edit_rule").on("click", function () {
+        is_rule_completed = false;
+        $("textarea").prop("readonly", false);
+        $("#done_rule_symbol").removeClass("text-success")
+        $(this).hide();
+        $("#loop-section").hide();
+        $("#success-section").hide();
+        $("#save_rule").show();
+    });
+
+    $("#save_rule").on("click", function () {
+        let expression_original_copy = $("#demoSource").val();
+        let expression = $("#demoSource").val();
+        let my_dict = {}
+        let elements = JSON.parse(localStorage.getItem("elements"));
+
+        for (let i = 0; i < elements.length; i++) {
+          const element = elements[i];
+          let placeholder_number = element.example_value;
+          expression = expression.replaceAll(element.expression_symbol, `${placeholder_number}`);
+        }
+
+        expression = expression.replaceAll("=", "==");
+
+        try {
+          if (!(expression.includes("=="))) {
+            $("#done_rule_symbol").removeClass("text-success");
+            $("#rule_error").text("Expression looks incomplete!");
+            return;
+          }
+
+          let my_calculated_expression = eval(expression);  
+          if (eval(expression)) {
+
+            let data = {
+              'criteria': expression_original_copy,
+              'id': id
+            }
+
+            let result = get_request('/save-rule', data);
+            console.log(result);
+
+            if (result['status']) {
+              $("textarea").prop("readonly", true);
+              $("#done_rule_symbol").addClass("text-success");
+              $("#rule_error").text("");
+              $("#save_rule").hide();
+              $("#edit_rule").show();
+              is_rule_completed = true;
+              $("#loop-section").show();
+              $('html, body').animate({
+                  scrollTop: $("#loop-section").offset().top
+              }, 1000);
+            }
+
+
+          }else{
+            $("#done_rule_symbol").removeClass("text-success");
+            $("#rule_error").text("Given mathematical expression is wrong!");
+          }
+        }
+        catch(err) {
+          $("#done_rule_symbol").removeClass("text-success");
+          $("#rule_error").text(err.message);
+        }
+
+
+
+    });
+
+
+    $("#edit_finalizing").on("click", function () {
+      $("#done_finalizing_symbol").removeClass("text-success");
+      $("#save_finalizing").show();
+      $("#edit_finalizing").hide();
+      $("#loop_number, #success_msg, #fail_msg").prop("disabled", false);
+      $("#success-section").hide();
+    });
+
+
+    $("#save_finalizing").on("click", function () {
+        let loop_number = parseInt($("#loop_number").val());
+        let success_msg = $("#success_msg").val();
+        let fail_msg = $("#fail_msg").val();
+
+        if (!(isNaN(loop_number)) && success_msg && fail_msg) {
+
+            let data = {
+              'id': id,
+              'loop': loop_number,
+              'success_message': success_msg,
+              'failure_message': fail_msg
+            }
+
+            let result = get_request('/save-loop', data);
+            console.log(result);
+
+            if (result['status']) {
+              $("#loop_error").text("");
+              $("#done_finalizing_symbol").addClass("text-success");
+
+              $("#save_finalizing").hide();
+              $("#edit_finalizing").show();
+              $("#loop_number, #success_msg, #fail_msg").prop("disabled", true);
+
+              $("#success-section").show();
+
+              is_loop_completed = true;
+                  
+              $('html, body').animate({
+                  scrollTop: $("#success-section").offset().top
+              }, 1000);
+            }
+
+
+
+          
+        }else{
+          $("#done_finalizing_symbol").removeClass("text-success");
+          $("#loop_error").text("Kindly enter valid values!");
+        }
+
+        
+    });
+
+
+    $("#preview").on("click", function () {
+        let result = get_request("/complete-question", {'id': id});
+        window.location.href = `/view-question/${id}`;
+    });
+	
+
+</script>
+
+    
+{% endblock %}

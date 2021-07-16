@@ -1,0 +1,311 @@
+
+{% extends 'inc/theme_base.html' %}
+{% load static %}
+
+{% block pagetitle %} 
+    Teacher profile
+{% endblock pagetitle %}
+
+{% block popups %} 
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+      <div class="row">
+        <div class="col-sm-6">
+          <h4><b>Add new exercise</b></h4>
+        </div>
+        <div class="col-sm-6">
+          <span class="close" onclick="close()">&times;</span>
+        </div>
+      </div>
+
+      <form action="{% url 'save-exercise' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="mt-4">
+          <div class="text-center mb-3">
+
+              <img  id="showing_div" src="{% static 'img/baseline_image_black_24dp.png' %}" onclick="upload_file('target_file')" 
+                    style="width: 90px; border-radius: 7px; border: solid 1px #cccccc; cursor: pointer;" alt="">
+                    <p class="mt-3">Respresentative icon for your exercise</p>
+          </div>
+
+          <input type="file" id="target_file" name="img" onchange="readURL(this, 'showing_div')" style="height: 0px; overflow:hidden; width: 0px;">
+
+
+          <!-- FORM ROW -->
+          <div class="form-row mb-4">
+            <!-- FORM ITEM -->
+            <div class="form-item">
+              <!-- FORM INPUT -->
+              <div class="form-input small">
+                <label for="exercise-name">Name of Exercise</label>
+                <input type="text" id="exercise-name" name="exercise-name" required>
+              </div>
+              <!-- /FORM INPUT -->
+            </div>
+            <!-- /FORM ITEM -->
+          </div>
+          <!-- /FORM ROW -->
+
+
+          <div class="form-select form-row my-4">
+            <label for="topic">Exercise topic</label>
+            <select id="topic" name="topic">
+              <option value=""></option>
+            </select>
+            <!-- FORM SELECT ICON -->
+            <svg class="form-select-icon icon-small-arrow">
+              <use xlink:href="#svg-small-arrow"></use>
+            </svg>
+            <!-- /FORM SELECT ICON -->
+          </div>
+
+          
+
+          <!-- FORM ROW -->
+          <div class="form-row mt-4">
+            <!-- FORM ITEM -->
+            <div class="form-item">
+              <!-- FORM INPUT -->
+              <div class="form-input">
+                <label for="description">Description</label>
+                <textarea 
+                  name="exercise-description" 
+                  id="exercise-description" rows="2" required></textarea>
+              </div>
+              <!-- /FORM INPUT -->
+            </div>
+            <!-- /FORM ITEM -->
+          </div>
+          <!-- /FORM ROW -->
+
+          <p class="mt-2">All input feilds are required!</p>
+        
+        </div>
+    
+        <div class="text-center">
+            <button type="submit" class="button secondary mt-4" style="margin-top: 15px;">Save exercise</button>
+        </div>
+
+      </form>
+
+  </div>
+
+</div>
+
+
+
+
+{% endblock popups %}
+
+
+{% block content %}
+
+
+
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+  <div class="row mb-4">
+    <div class="col-sm-3 my-2">
+      
+          <!-- WIDGET BOX -->
+      <div class="widget-box">
+        <span class="badge badge-success">Teacher</span>
+
+        <!-- PROGRESS ARC SUMMARY -->
+        <div class="progress-arc-summary">
+
+          <!-- PROGRESS ARC WRAP -->
+          <div class="progress-arc-wrap">
+              
+              <!-- USER SHORT DESCRIPTION AVATAR -->
+            <div class="user-short-description-avatar user-avatar big">
+              <!-- USER AVATAR BORDER -->
+              <div class="user-avatar-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-148-164"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR BORDER -->
+          
+              <!-- USER AVATAR CONTENT -->
+              <div class="user-avatar-content">
+                <!-- HEXAGON -->
+                <div class="hexagon-image-100-110" data-src="{% static 'img/avatar/01.jpg' %}"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR CONTENT -->
+          
+              <!-- USER AVATAR PROGRESS -->
+              <div class="user-avatar-progress">
+                <!-- HEXAGON -->
+                <div class="hexagon-progress-124-136"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS -->
+          
+              <!-- USER AVATAR PROGRESS BORDER -->
+              <div class="user-avatar-progress-border">
+                <!-- HEXAGON -->
+                <div class="hexagon-border-124-136"></div>
+                <!-- /HEXAGON -->
+              </div>
+              <!-- /USER AVATAR PROGRESS BORDER -->
+          
+              <!-- USER AVATAR BADGE -->
+              <div class="user-avatar-badge">
+                <!-- USER AVATAR BADGE BORDER -->
+                <div class="user-avatar-badge-border">
+                  <!-- HEXAGON -->
+                  <div class="hexagon-40-44"></div>
+                  <!-- /HEXAGON -->
+                </div>
+                <!-- /USER AVATAR BADGE BORDER -->
+          
+                <!-- USER AVATAR BADGE CONTENT -->
+                <div class="user-avatar-badge-content">
+                  <!-- HEXAGON -->
+                  <div class="hexagon-dark-32-34"></div>
+                  <!-- /HEXAGON -->
+                </div>
+                <!-- /USER AVATAR BADGE CONTENT -->
+          
+                <!-- USER AVATAR BADGE TEXT -->
+                <p class="user-avatar-badge-text">24</p>
+                <!-- /USER AVATAR BADGE TEXT -->
+              </div>
+              <!-- /USER AVATAR BADGE -->
+            </div>
+            <!-- /USER SHORT DESCRIPTION AVATAR -->
+
+
+
+            <!-- PROGRESS ARC -->
+            <div class="progress-arc">
+              <!-- <canvas id="profile-completion-chart"></canvas> -->
+            </div>
+            <!-- PROGRESS ARC -->
+
+
+
+          </div>
+          <!-- /PROGRESS ARC WRAP -->
+      
+          <!-- PROGRESS ARC SUMMARY INFO -->
+          <div class="progress-arc-summary-info">
+            <!-- PROGRESS ARC SUMMARY TITLE -->
+            <p class="progress-arc-summary-title">{{ user.first_name }} {{ user.last_name }}</p>
+            <!-- /PROGRESS ARC SUMMARY TITLE -->
+      
+            <!-- PROGRESS ARC SUMMARY TITLE -->
+            <p class="progress-arc-summary-subtitle">{{ user.username }}</p>
+            <!-- /PROGRESS ARC SUMMARY TITLE -->
+            <hr>
+            <!-- PROGRESS ARC SUMMARY TITLE -->
+            <p class="progress-arc-summary-text">Create <b>exercises</b> and <b>quests</b> for different topics to get reward points for acheiving the badges.</p>
+            <!-- /PROGRESS ARC SUMMARY TITLE -->
+
+            <p class="button secondary full popup-manage-group-trigger mt-4">ADD or EDIT information</p>
+          </div>
+          <!-- /PROGRESS ARC SUMMARY INFO -->
+        </div>
+        <!-- /PROGRESS ARC SUMMARY -->
+    
+        
+      </div>
+      <!-- /WIDGET BOX -->
+    </div>
+
+    <div class="col-sm-9 my-2">
+      {% for message in messages %}
+        <div class="alert alert-success" style="border-radius: 10px;" role="alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+      
+      <div class="widget-box">
+        <h3>Contribution summary</h3>
+
+        <div class="row mt-2">
+          <div class="col-sm-6 mt-3">
+            <div class="widget-box border">
+              <div class="row">
+                <div class="col-sm-3 col-3 col-xl-3 col-lg-3 d-flex align-items-center">
+                  <img class="achievement-status-image" style="width: 100%;" src="{% static 'img/badge/tycoon-b.png' %}" alt="bdage-completedq-s">
+                </div>
+
+                <div class="col-sm-5 col-6 col-xl-6 col-lg-6 d-flex align-items-center">
+                  <div>
+                    <h3>{{ all_questions }}</h3>
+                    <h6 class="mt-1">
+                      <a href="https://google.com/"><u>Questions</u></a> created
+                    </h6>
+                  </div>
+                </div>
+
+                <div class="col-sm-4 col-3 col-xl-3 col-lg-3 d-flex align-items-center">
+                  <a class="button secondary full" href="{% url 'add-question' %}"  data-title="Add new question">
+                      <!-- ICON PLUS -->
+                      <svg class="icon-plus">
+                        <use xlink:href="#svg-plus"></use>
+                      </svg>
+                      <!-- /ICON PLUS -->
+                  </a>
+
+                </div>
+              
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6 mt-3">
+            <div class="widget-box border">
+              <div class="row">
+                <div class="col-sm-3 col-3 col-xl-3 col-lg-3 d-flex align-items-center">
+                  <img class="achievement-status-image" style="width: 100%;" src="{% static 'img/badge/caffeinated-b.png' %}" alt="bdage-completedq-s">
+                </div>
+
+                <div class="col-sm-5 col-6 col-xl-6 col-lg-6 d-flex align-items-center">
+                  <div>
+                    <h3>{{ all_exercises }}</h3>
+                    <h6 class="mt-1">
+                      <a href="https://google.com/"><u>Exercises</u></a> created</h6>
+                  </div>
+                </div>
+
+                <div class="col-sm-4 col-3 col-xl-3 col-lg-3 d-flex align-items-center">
+                    <button class="button secondary full text-tooltip-tft" 
+                          data-title="Add new exercise"
+                          onclick="open_modal()">
+                    <!-- ICON PLUS -->
+                    <svg class="icon-plus">
+                      <use xlink:href="#svg-plus"></use>
+                    </svg>
+                    <!-- /ICON PLUS -->
+                  </button>
+                </div>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+<script src="{% static 'js/modal.js' %}"></script>
+<script src="{% static 'js/upload_pic.js' %}"></script>
+
+<!-- /CONTENT GRID -->
+    
+{% endblock %}

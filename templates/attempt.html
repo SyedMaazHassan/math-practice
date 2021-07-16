@@ -1,0 +1,143 @@
+
+{% extends 'inc/theme_base.html' %}
+{% load static %}
+
+{% block pagetitle %} 
+    Question view
+{% endblock pagetitle %}
+
+{% block popups %} 
+
+
+{% endblock popups %}
+
+
+{% block content %}
+
+<!-- CONTENT GRID -->
+<div class="content-grid">
+  <div class="row mb-4">
+
+    <div class="col-sm-8 my-2">
+      <div class="widget-box">
+        <h3>{{ question.title }}</h3>
+
+        <p class="mt-3" style="font-size: 20px; line-height: 30px;">
+            {{ question.description }}
+        </p>
+
+        <div class="row" id="main-app">
+            <div class="col-sm-12">
+              
+                <div class="main-card" id="equation">
+                  <h2>$$ {{ question.criteria }} $$</h2>
+                </div>
+
+                
+                <div class="mt-2">
+                 
+                  {% for version in versions %}
+                    <div class="widget-box mt-4 p-3" style="border-color: #e2e2e2;">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <b>Part {{ forloop.counter }} of {{ question.loop }}</b>
+
+                          <div class="row py-3 px-2">
+
+                            {% for input in answers_fields %}
+                            <div class="col-sm-6 px-2">
+                              <div class="form-row">
+                                <!-- FORM ITEM -->
+                                <div class="form-item">
+                                  <!-- FORM INPUT -->
+                                  <div class="form-input">
+                                    <label for="title">{{ input.label }} - {{ input.symbol }}</label>
+                                    <input type="text" id="input_{{ input.symbol }}?_{{ version.s_no }}" class="answer-input" style="width: 100%;" value="">
+                                  </div>
+                                  <!-- /FORM INPUT -->
+                                </div>
+                                <!-- /FORM ITEM -->
+                              </div>
+                              <!-- /FORM ROW -->
+                              
+                            </div>
+                            {% endfor %}
+
+                         
+                          </div>
+
+                        </div>
+
+                        <div class="col-sm-6 d-flex align-items-center justify-content-center pr-4">
+                          <input type="hidden" value="{{ version.expression }}"  id="expression_input_{{ version.s_no }}">
+                          <div style="font-size: 25px;" id="expression_{{ version.s_no }}">
+                            $$ {{ version.expression }} $$
+                          </div>
+                        </div>
+                      </div>
+                      
+
+
+                    </div>
+                  {% endfor %}
+                </div>
+
+                <div class="mt-4 p-3 text-center">
+                    <button type="button" class="button secondary full popup-manage-group-trigger" style="width: 40%; margin: auto;">Submit</button>
+
+                </div>
+            </div>
+        </div>
+        
+      </div>
+
+    </div>
+
+    <div class="col-sm-4">
+        <div class="widget-box mt-2">
+            <h3>Coming up next</h3>
+
+
+
+
+
+        </div>
+      </div>
+  </div>
+
+
+</div>
+<!-- /CONTENT GRID -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js">
+    </script>
+
+<script>
+      $("input").parent().addClass("active");
+
+      var a = "a = b"
+      function update_expression(id, new_value) {
+        $(`#expression_1`).text(`${a}`)
+      }
+
+
+      // $(".answer-input").on('input', function () {
+      //   let id_container = this.id.split("_");
+      //   let version_number = id_container[2];
+      //   let symbol = id_container[1];
+      //   let value = this.value;
+        
+      //   let expression = $(`#expression_input_${version_number}`).val();
+      //   console.log(expression);
+      //   console.log(value);
+      //   update_expression(`expression_${version_number}`, value);
+
+      // })
+
+
+</script>
+
+    
+{% endblock %}
